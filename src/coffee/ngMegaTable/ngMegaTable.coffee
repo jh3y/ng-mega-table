@@ -19,12 +19,11 @@ angular.module('ngMegaTable.directives', [])
             We need both to extract the cell type and the data to be displayed.
           ###
           Handlebars.registerHelper 'megaTableCell', (context, options) ->
-            # console.log context, options
             cell = ''
             if options.type and options.type is 'static'
               cell = '<td>' + context[options.selector] + '</td>'
             else if options.type and options.type is 'action'
-              cell = '<td><button classes=' + options.classes + ' ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>'
+              cell = '<td><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>'
             cell
           opts = $scope.tableOptions
           $tbody = $elem.find 'tbody'

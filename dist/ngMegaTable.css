@@ -1,0 +1,4 @@
+[ng-mega-table] > table > tbody {
+  min-height: 100px;
+  background: red;
+}

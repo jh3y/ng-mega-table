@@ -24,7 +24,7 @@
           if (options.type && options.type === 'static') {
             cell = '<td>' + context[options.selector] + '</td>';
           } else if (options.type && options.type === 'action') {
-            cell = '<td><button classes=' + options.classes + ' ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>';
+            cell = '<td><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>';
           }
           return cell;
         });

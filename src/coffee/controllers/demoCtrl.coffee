@@ -20,14 +20,19 @@ angular.module('ngMegaTableDemo.Controllers')
         selectItem: $scope.selectItem
       columns: [
         type: 'static'
+        label: 'Id'
+        id: 'id'
+        selector: 'id'
+      ,
+        type: 'static'
         label: 'Name'
         id: 'name'
         selector: 'name'
       ,
         type: 'static'
-        label: 'Id'
-        id: 'id'
-        selector: 'id'
+        label: 'Value'
+        id: 'value'
+        selector: 'value'
       ,
         type: 'action'
         actionLabel: 'Select Item'

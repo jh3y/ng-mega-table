@@ -7,6 +7,7 @@ angular.module('ngMegaTableDemo.Services')
           data.push
             name: 'myName'
             id: '#' + i
+            value: i * 2
           i++
         data
       return {
