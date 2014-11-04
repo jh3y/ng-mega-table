@@ -18,19 +18,25 @@ var gulp = require('gulp'),
     coffee: [
       'src/coffee/services/ngMegaTableDemo.coffee',
       'src/coffee/services/**/*.coffee',
-      'src/coffee/directives/ngMegaTableDemo.coffee',
-      'src/coffee/directives/**/*.coffee',
+      // 'src/coffee/directives/ngMegaTableDemo.coffee',
+      // 'src/coffee/directives/**/*.coffee',
       'src/coffee/controllers/ngMegaTableDemo.coffee',
       'src/coffee/controllers/**/*.coffee',
       'src/coffee/app.coffee',
       'src/coffee/routes.coffee'
     ],
+    ngMegaTable: {
+      coffee: 'src/coffee/ngMegaTable/**/*.coffee',
+      templates: 'src/jade/templates/ngMegaTable/**/*.jade'
+    },
     vendor: {
       js: [
         'src/vendor/jquery/dist/jquery.js',
         'src/vendor/angular/angular.js',
         'src/vendor/angular-resource/angular-resource.js',
-        'src/vendor/angular-route/angular-route.js'
+        'src/vendor/angular-route/angular-route.js',
+        'src/vendor/handlebars/handlebars.js'
+        // 'dist/ngMegaTable.min.js',
       ],
       css: [
         'src/vendor/bootstrap/dist/css/bootstrap.min.css'
@@ -41,13 +47,16 @@ var gulp = require('gulp'),
       'src/jade/documents/**/*.jade',
       'src/jade/layout-blocks/**/*.jade'
     ],
-    views: 'src/jade/views/**/*.jade',
-    templates: 'src/jade/templates/**/*.jade',
+    templates: 'src/jade/templates/views/**/*.jade',
     less: ['src/less/**/*.less'],
   },
   env = 'out/',
   destinations = {
     build: '',
+    ngMegaTable: {
+      js: 'dist/',
+      templates: 'tmp/ngMegaTable/'
+    },
     html: env,
     css: env + 'css/',
     js: env + 'js/',
@@ -68,6 +77,8 @@ gulp.task('serve', ['build'], function(event) {
 	gulp.watch(sources.overwatch, ['reload']);
 });
 
+
+
 gulp.task('less:compile', function(event) {
   return gulp.src(sources.less)
     .pipe(concat('style.css'))
@@ -76,10 +87,11 @@ gulp.task('less:compile', function(event) {
     .pipe(cssmin())
     .pipe(gulp.dest(destinations.css));
 });
-
 gulp.task('less:watch', function(event) {
   gulp.watch(sources.less, ['less:compile']);
 });
+
+
 
 
 gulp.task('vendor:scripts:publish', function(event) {
@@ -102,21 +114,26 @@ gulp.task('vendor:styles:publish', function(event) {
 });
 gulp.task('vendor:publish', ['vendor:scripts:publish', 'vendor:styles:publish']);
 
+
+
+
 gulp.task('jade:compile', function(event) {
   return gulp.src(sources.docs)
     .pipe(plumber())
     .pipe(jade())
     .pipe(gulp.dest(destinations.html));
 });
-
 gulp.task('jade:watch', function(event) {
   gulp.watch(sources.docs, ['jade:compile']);
 });
 
 
+
+
+
 gulp.task('coffee:compile', ['templates:compile'], function(event) {
   var coffeeFilter = filter('**/*.coffee');
-  return gulp.src(sources.coffee.concat([destinations.templates + '**/*.*']))
+  return gulp.src(sources.coffee.concat([destinations.templates + '/*.*']))
     .pipe(plumber())
     .pipe(coffeeFilter)
     .pipe(concat('app.coffee'))
@@ -143,9 +160,55 @@ gulp.task('coffee:watch', function(event) {
   gulp.watch(sources.coffee, ['coffee:compile']);
 });
 
+gulp.task('coffee:compile:dist', ['templates:compile:dist'], function(event) {
+  var coffeeFilter = filter('**/*.coffee');
+  return gulp.src([
+    sources.ngMegaTable.coffee,
+    destinations.ngMegaTable.templates + '**/*.*'
+  ])
+  .pipe(plumber())
+  .pipe(coffeeFilter)
+  .pipe(concat('ngMegaTable.coffee'))
+  .pipe(coffee({
+    bare: true
+  }))
+  .pipe(coffeeFilter.restore())
+  .pipe(order([
+    '**/ngMegaTable.coffee',
+    '**/ngMegaTable/ngMegaTableTemplates.js'
+  ]))
+  .pipe(concat('ngMegaTable.js'))
+  .pipe(wrap('(function(){<%= contents %>}());'))
+  .pipe(gulp.dest(destinations.ngMegaTable.js))
+  .pipe(rename({
+    suffix: '.min'
+  }))
+  .pipe(ngmin())
+  .pipe(uglify())
+  .pipe(gulp.dest(destinations.ngMegaTable.js));
+});
+
+gulp.task('ngMegaTable:coffee:watch', function(event) {
+  gulp.watch(sources.ngMegaTable.coffee, ['coffee:compile:dist']);
+});
+
+
+gulp.task('templates:compile:dist', function(event) {
+  return gulp.src(sources.ngMegaTable.templates)
+    .pipe(jade())
+    .pipe(templateCache('ngMegaTableTemplates.js', {
+      module: 'ngMegaTable'
+    }))
+    .pipe(gulp.dest(destinations.ngMegaTable.templates));
+});
+gulp.task('ngMegaTable:templates:watch', function(event) {
+  gulp.watch([sources.ngMegaTable.templates], ['coffee:compile:dist']);
+});
+
+
 
 gulp.task('templates:compile', function(event) {
-  return gulp.src([sources.templates, sources.views])
+  return gulp.src([sources.templates])
     .pipe(jade())
     .pipe(templateCache({
       module: 'ngMegaTableDemo'
@@ -153,7 +216,7 @@ gulp.task('templates:compile', function(event) {
     .pipe(gulp.dest(destinations.templates));
 });
 gulp.task('templates:watch', function(event) {
-  gulp.watch([sources.views, sources.templates], ['coffee:compile']);
+  gulp.watch([sources.templates], ['coffee:compile']);
 });
 
 
@@ -162,5 +225,11 @@ gulp.task('clean:output', function(event) {
     .pipe(clean());
 });
 
+
+gulp.task('dist:watch', function(event) {
+  gulp.watch('dist/**/*.*', ['vendor:publish']);
+});
+
+
 gulp.task('build', ['coffee:compile', 'less:compile', 'jade:compile']);
-gulp.task('default', ['coffee:watch', 'templates:watch', 'jade:watch', 'less:watch', 'serve']);
+gulp.task('default', ['coffee:watch', 'templates:watch', 'ngMegaTable:templates:watch', 'ngMegaTable:coffee:watch', 'jade:watch', 'less:watch', 'serve', 'dist:watch']);

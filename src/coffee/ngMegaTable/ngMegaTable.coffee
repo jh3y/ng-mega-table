@@ -1,11 +1,9 @@
-angular.module 'ngMegaTable', []
-
-angular.module('ngMegaTable')
+angular.module('ngMegaTable.directives', [])
   .directive 'ngMegaTable', [
     '$templateCache',
     ($templateCache) ->
       return {
-        templateUrl: 'directives/ngMegaTable.html'
+        templateUrl: 'ngMegaTable.html'
         restrict: 'AE'
         transclude: false
         replace: true
@@ -31,8 +29,8 @@ angular.module('ngMegaTable')
           opts = $scope.tableOptions
           $tbody = $elem.find 'tbody'
           $thead = $elem.find 'thead'
-          $theadTemplate = Handlebars.compile $templateCache.get('directives/ngMegaTableHead.html')
-          $tbodyTemplate = Handlebars.compile $templateCache.get('directives/ngMegaTableBody.html')
+          $theadTemplate = Handlebars.compile $templateCache.get('ngMegaTableHead.html')
+          $tbodyTemplate = Handlebars.compile $templateCache.get('ngMegaTableBody.html')
           $thead.replaceWith $theadTemplate(opts)
           console.info 'mega table loaded'
 
@@ -79,3 +77,7 @@ angular.module('ngMegaTable')
 
       }
   ]
+
+
+
+angular.module 'ngMegaTable', ['ngMegaTable.directives']
