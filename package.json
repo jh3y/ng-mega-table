@@ -1,0 +1,45 @@
+{
+  "name": "ng-mega-table",
+  "description": "a directive for handling large data",
+  "version": "0.0.1",
+  "author": {
+    "name": "jh3y",
+    "email": "jh3y@users.noreply.github.com",
+    "url": "http://jh3y.github.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jh3y/ng-mega-table.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jh3y/ng-mega-table/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "express-livereload": "0.0.24",
+    "gulp": "^3.6.2",
+    "gulp-angular-templatecache": "^1.4.1",
+    "gulp-clean": "^0.3.0",
+    "gulp-coffee": "^1.4.2",
+    "gulp-concat": "^2.2.0",
+    "gulp-connect": "^2.0.6",
+    "gulp-cssmin": "^0.1.6",
+    "gulp-filter": "^0.4.1",
+    "gulp-jade": "^0.5.0",
+    "gulp-less": "^1.3.6",
+    "gulp-ngmin": "^0.3.0",
+    "gulp-order": "^1.1.1",
+    "gulp-plumber": "^0.6.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.0.1",
+    "gulp-wrap": "^0.3.0"
+  }
+}

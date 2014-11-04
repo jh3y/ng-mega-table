@@ -1,0 +1,4 @@
+.col-md-12(ng-controller = "DemoCtrl")
+  button.btn.btn-default(ng-click="loadData(10)") Load Data
+  button.btn.btn-default(ng-click="toggleLoading()") Toggle Load
+  div(ng-mega-table, change-event="data:changed", load-event="data:loading")
