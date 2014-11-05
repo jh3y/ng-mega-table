@@ -95,6 +95,6 @@
 
 angular.module('ngMegaTable', ['ngMegaTable.directives']);
 
-angular.module("ngMegaTable").run(["$templateCache", function($templateCache) {$templateCache.put("ngMegaTable.html","<div class=\"mega-table\"><table ng-class=\"{loading: loading}\"><thead></thead></table><table><tbody></tbody></table></div>");
+angular.module("ngMegaTable").run(["$templateCache", function($templateCache) {$templateCache.put("ngMegaTable.html","<div class=\"mega-table\"><table><thead></thead></table><table ng-class=\"{loading: loading}\"><tbody></tbody></table></div>");
 $templateCache.put("ngMegaTableBody.html","<tbody class=\"ng-mega-table-body\">{{#items}}<tr>{{#../columns}}  \n{{#megaTableCell ../this this}}\n{{/megaTableCell}}\n{{/../columns}}</tr>{{/items}}</tbody>");
 $templateCache.put("ngMegaTableHead.html","<thead><tr>{{#each columns}}<th id=\"{{this.id}}\" style=\"{{this.style}}\">{{this.label}}</th>{{/each}}</tr></thead>");}]);}());

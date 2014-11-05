@@ -27,6 +27,7 @@
     "express-livereload": "0.0.24",
     "gulp": "^3.6.2",
     "gulp-angular-templatecache": "^1.4.1",
+    "gulp-autoprefixer": "^1.0.1",
     "gulp-clean": "^0.3.0",
     "gulp-coffee": "^1.4.2",
     "gulp-concat": "^2.2.0",

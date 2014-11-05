@@ -1,7 +1,45 @@
+@megaTableWidth: 360px;
 [ng-mega-table],
 .ng-mega-table {
   margin: 10px;
+  width: @megaTableWidth;
   & > table {
+    position: relative;
+    &.loading {
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #777;
+        opacity: .5;
+      }
+      &:after {
+        z-index: 2;
+        content: "";
+        height: 40px;
+        width: 40px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: (-40px / 2) 0 0 (-40px / 2);
+        transition: all .75s ease 0s;
+        border-radius: 100%;
+        border-top: 2px solid yellow;
+        animation: spin .5s infinite linear;
+        transform-origin: center;
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
     & td,
     & th {
       padding: 10px;
@@ -17,6 +55,8 @@
     }
     & > tbody {
       border: 1px solid #e7e7e7;
+      min-height: 100px;
+      width: @megaTableWidth;
       max-height: 150px;
       overflow: auto;
       display: block;

@@ -14,6 +14,7 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   ngmin = require('gulp-ngmin'),
+  prefix = require('gulp-autoprefixer'),
   sources = {
     coffee: [
       '!src/coffee/ngMegaTable/**/*.coffee',
@@ -105,6 +106,7 @@ gulp.task('ngMegaTable:less:compile', function(event) {
   return gulp.src(sources.ngMegaTable.less)
     .pipe(plumber())
     .pipe(less())
+    .pipe(prefix())
     .pipe(gulp.dest(destinations.ngMegaTable.css))
     .pipe(cssmin())
     .pipe(rename({

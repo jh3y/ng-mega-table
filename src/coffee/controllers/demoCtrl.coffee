@@ -51,6 +51,9 @@ angular.module('ngMegaTableDemo.Controllers')
 
     $scope.loadData = (size = 10, delay = 2000)->
       $rootScope.$broadcast 'data:loading'
+      if $scope.dataSize and $scope.dataSize.trim() isnt ''
+        if !isNaN parseInt($scope.dataSize, 10)
+          size = $scope.dataSize
       $timeout(->
         $scope.data = DataSrv.get size
         $rootScope.$broadcast 'data:changed', $scope.data
