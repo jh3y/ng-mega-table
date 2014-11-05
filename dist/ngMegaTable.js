@@ -21,9 +21,9 @@
           var cell;
           cell = '';
           if (options.type && options.type === 'static') {
-            cell = '<td style="' + options.style + '">' + context[options.selector] + '</td>';
+            cell = '<td style="' + options.style + '">' + context[options.key] + '</td>';
           } else if (options.type && options.type === 'action') {
-            cell = '<td style="' + options.style + '"><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>';
+            cell = '<td style="' + options.style + '"><button class="' + options.buttonClasses + '" ' + options.buttonAttributes + '="' + context[options.actionParams] + '" >' + options.buttonText + '</button></td>';
           }
           return cell;
         });
