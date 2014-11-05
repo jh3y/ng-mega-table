@@ -20,9 +20,9 @@ angular.module('ngMegaTable.directives', [])
           Handlebars.registerHelper 'megaTableCell', (context, options) ->
             cell = ''
             if options.type and options.type is 'static'
-              cell = '<td>' + context[options.selector] + '</td>'
+              cell = '<td style="' + options.style + '">' + context[options.selector] + '</td>'
             else if options.type and options.type is 'action'
-              cell = '<td><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>'
+              cell = '<td style="' + options.style + '"><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>'
             cell
 
           renderTHead = (opts) ->

@@ -1,18 +1,32 @@
-[ng-mega-table] {
+[ng-mega-table],
+.ng-mega-table {
+  margin: 10px;
   & > table {
+    & td,
+    & th {
+      padding: 10px;
+    }
     & > thead {
+      border: 1px solid #222;
       & > tr {
-        & > td {
-
+        & > th {
+          background: #222;
+          color: #fff;
         }
       }
     }
     & > tbody {
-      min-height: 100px;
-      background: red;
+      border: 1px solid #e7e7e7;
+      max-height: 150px;
+      overflow: auto;
+      display: block;
       & > tr {
+        &:hover {
+          & > td {
+            background-color: #E7E7E7;
+          }
+        }
         & > td {
-
         }
       }
     }

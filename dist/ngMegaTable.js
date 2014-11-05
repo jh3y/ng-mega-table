@@ -21,9 +21,9 @@
           var cell;
           cell = '';
           if (options.type && options.type === 'static') {
-            cell = '<td>' + context[options.selector] + '</td>';
+            cell = '<td style="' + options.style + '">' + context[options.selector] + '</td>';
           } else if (options.type && options.type === 'action') {
-            cell = '<td><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>';
+            cell = '<td style="' + options.style + '"><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>';
           }
           return cell;
         });
@@ -95,6 +95,6 @@
 
 angular.module('ngMegaTable', ['ngMegaTable.directives']);
 
-angular.module("ngMegaTable").run(["$templateCache", function($templateCache) {$templateCache.put("ngMegaTable.html","<div class=\"mega-table\"><table ng-class=\"{loading: loading}\"><thead></thead><tbody></tbody></table></div>");
+angular.module("ngMegaTable").run(["$templateCache", function($templateCache) {$templateCache.put("ngMegaTable.html","<div class=\"mega-table\"><table ng-class=\"{loading: loading}\"><thead></thead></table><table><tbody></tbody></table></div>");
 $templateCache.put("ngMegaTableBody.html","<tbody class=\"ng-mega-table-body\">{{#items}}<tr>{{#../columns}}  \n{{#megaTableCell ../this this}}\n{{/megaTableCell}}\n{{/../columns}}</tr>{{/items}}</tbody>");
-$templateCache.put("ngMegaTableHead.html","<thead><tr>{{#each columns}}<th id=\"{{this.id}}\">{{this.label}}</th>{{/each}}</tr></thead>");}]);}());
+$templateCache.put("ngMegaTableHead.html","<thead><tr>{{#each columns}}<th id=\"{{this.id}}\" style=\"{{this.style}}\">{{this.label}}</th>{{/each}}</tr></thead>");}]);}());

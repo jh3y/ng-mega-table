@@ -16,6 +16,7 @@ var gulp = require('gulp'),
   ngmin = require('gulp-ngmin'),
   sources = {
     coffee: [
+      '!src/coffee/ngMegaTable/**/*.coffee',
       'src/coffee/services/ngMegaTableDemo.coffee',
       'src/coffee/services/**/*.coffee',
       'src/coffee/controllers/ngMegaTableDemo.coffee',

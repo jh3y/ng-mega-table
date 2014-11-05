@@ -23,16 +23,19 @@ angular.module('ngMegaTableDemo.Controllers')
         label: 'Id'
         id: 'id'
         selector: 'id'
+        style: 'width: 80px; max-width: 80px;'
       ,
         type: 'static'
         label: 'Name'
         id: 'name'
         selector: 'name'
+        style: 'width: 80px; max-width: 80px;'
       ,
         type: 'static'
         label: 'Value'
         id: 'value'
         selector: 'value'
+        style: 'width: 80px; max-width: 80px;'
       ,
         type: 'action'
         actionLabel: 'Select Item'
@@ -43,6 +46,7 @@ angular.module('ngMegaTableDemo.Controllers')
         actionParams: 'id'
         actionParamsAttribute: 'select-item'
         action: 'selectItem'
+        style: 'width: 120px; max-width: 120px;'
       ]
 
     $scope.loadData = (size = 10, delay = 2000)->
