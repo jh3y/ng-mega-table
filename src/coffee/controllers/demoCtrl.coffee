@@ -39,8 +39,9 @@ angular.module('ngMegaTableDemo.Controllers')
         attributes: 'select-item'
         classes: 'btn btn-default'
         id: 'selectItem'
-        selector: '[select-item]'
+        selector: 'select-item'
         actionParams: 'id'
+        actionParamsAttribute: 'select-item'
         action: 'selectItem'
       ]
 

@@ -5,7 +5,7 @@ angular.module('ngMegaTable.directives', [])
       return {
         templateUrl: 'ngMegaTable.html'
         restrict: 'AE'
-        transclude: false
+        transclude: true
         replace: true
         scope:
           tableOptions: '='
@@ -15,7 +15,6 @@ angular.module('ngMegaTable.directives', [])
             Creating a mega cell Handlebars helper.
             Context will be the item of data being used whilst
             options are the column options.
-
             We need both to extract the cell type and the data to be displayed.
           ###
           Handlebars.registerHelper 'megaTableCell', (context, options) ->
@@ -25,29 +24,37 @@ angular.module('ngMegaTable.directives', [])
             else if options.type and options.type is 'action'
               cell = '<td><button class="' + options.classes + '" ' + options.attributes + '="' + context[options.actionParams] + '" >' + options.actionLabel + '</button></td>'
             cell
-          opts = $scope.tableOptions
-          $tbody = $elem.find 'tbody'
-          $thead = $elem.find 'thead'
-          $theadTemplate = Handlebars.compile $templateCache.get('ngMegaTableHead.html')
-          $tbodyTemplate = Handlebars.compile $templateCache.get('ngMegaTableBody.html')
-          $thead.replaceWith $theadTemplate(opts)
-          console.info 'mega table loaded'
 
-          ###
-           Click Handling for mega table
-          ###
-          #Iterate over the columns array and pick out actions selectors and actions
-          $elem.on 'click', (e)->
-            if e and e.target and e.target.hasAttribute 'select-item'
-              console.log 'invoke scope action'
-              # console.log $scope.rowActions
-              opts.actions.selectItem e.target.getAttribute('select-item')
-              # $scope.rowAction
+          renderTHead = (opts) ->
+            $thead = $elem.find 'thead'
+            $theadTemplate = Handlebars.compile $templateCache.get('ngMegaTableHead.html')
+            $thead.replaceWith $theadTemplate(opts)
+
+          renderTBody = (data) ->
+            $tbody = $elem.find 'tbody'
+            $tbodyTemplate = Handlebars.compile $templateCache.get('ngMegaTableBody.html')
+            $scope.$apply ->
+              if data.length is 0
+                $tbody.html $('<h4>No data currently available</h4>')
+              else
+                opts.items = data
+                $tbody.replaceWith $($tbodyTemplate(opts))
+            $scope.loading = false
 
           ###
             Initialise templates and variables for table
           ###
+          opts = $scope.tableOptions
+          renderTHead opts
 
+          ###
+           Click Handling for mega table
+          ###
+          $elem.on 'click', (e) ->
+            [].forEach.call opts.columns, (column, index) ->
+              if column.type and column.type is 'action'
+                if e and e.target and e.target and (e.target.hasAttribute(column.selector) or e.target.className.indexOf(column.selector) isnt -1)
+                  opts.actions[column.action] e.target.getAttribute(column.actionParamsAttribute)
 
 
           ###
@@ -57,13 +64,7 @@ angular.module('ngMegaTable.directives', [])
             throw new Error 'ngMegaTable: no data change event defined'
           else
             $scope.$on opts.changeEvent, (e, data) ->
-              $scope.$apply ->
-                if data.length is 0
-                  $tbody.html $('<h4>No data currently available</h4>')
-                else
-                  opts.items = data
-                  $tbody.replaceWith $($tbodyTemplate(opts))
-              $scope.loading = false
+              renderTBody data
 
           ###
             Handle loading event for table to apply CSS

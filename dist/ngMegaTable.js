@@ -3,7 +3,7 @@
     return {
       templateUrl: 'ngMegaTable.html',
       restrict: 'AE',
-      transclude: false,
+      transclude: true,
       replace: true,
       scope: {
         tableOptions: '='
@@ -14,10 +14,9 @@
           Creating a mega cell Handlebars helper.
           Context will be the item of data being used whilst
           options are the column options.
-        
           We need both to extract the cell type and the data to be displayed.
          */
-        var $tbody, $tbodyTemplate, $thead, $theadTemplate, opts;
+        var opts, renderTBody, renderTHead;
         Handlebars.registerHelper('megaTableCell', function(context, options) {
           var cell;
           cell = '';
@@ -28,27 +27,45 @@
           }
           return cell;
         });
+        renderTHead = function(opts) {
+          var $thead, $theadTemplate;
+          $thead = $elem.find('thead');
+          $theadTemplate = Handlebars.compile($templateCache.get('ngMegaTableHead.html'));
+          return $thead.replaceWith($theadTemplate(opts));
+        };
+        renderTBody = function(data) {
+          var $tbody, $tbodyTemplate;
+          $tbody = $elem.find('tbody');
+          $tbodyTemplate = Handlebars.compile($templateCache.get('ngMegaTableBody.html'));
+          $scope.$apply(function() {
+            if (data.length === 0) {
+              return $tbody.html($('<h4>No data currently available</h4>'));
+            } else {
+              opts.items = data;
+              return $tbody.replaceWith($($tbodyTemplate(opts)));
+            }
+          });
+          return $scope.loading = false;
+        };
+
+        /*
+          Initialise templates and variables for table
+         */
         opts = $scope.tableOptions;
-        $tbody = $elem.find('tbody');
-        $thead = $elem.find('thead');
-        $theadTemplate = Handlebars.compile($templateCache.get('ngMegaTableHead.html'));
-        $tbodyTemplate = Handlebars.compile($templateCache.get('ngMegaTableBody.html'));
-        $thead.replaceWith($theadTemplate(opts));
-        console.info('mega table loaded');
+        renderTHead(opts);
 
         /*
          Click Handling for mega table
          */
         $elem.on('click', function(e) {
-          if (e && e.target && e.target.hasAttribute('select-item')) {
-            console.log('invoke scope action');
-            return opts.actions.selectItem(e.target.getAttribute('select-item'));
-          }
+          return [].forEach.call(opts.columns, function(column, index) {
+            if (column.type && column.type === 'action') {
+              if (e && e.target && e.target && (e.target.hasAttribute(column.selector) || e.target.className.indexOf(column.selector) !== -1)) {
+                return opts.actions[column.action](e.target.getAttribute(column.actionParamsAttribute));
+              }
+            }
+          });
         });
-
-        /*
-          Initialise templates and variables for table
-         */
 
         /*
           Handle data change event for table
@@ -57,15 +74,7 @@
           throw new Error('ngMegaTable: no data change event defined');
         } else {
           $scope.$on(opts.changeEvent, function(e, data) {
-            $scope.$apply(function() {
-              if (data.length === 0) {
-                return $tbody.html($('<h4>No data currently available</h4>'));
-              } else {
-                opts.items = data;
-                return $tbody.replaceWith($($tbodyTemplate(opts)));
-              }
-            });
-            return $scope.loading = false;
+            return renderTBody(data);
           });
         }
 

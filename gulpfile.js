@@ -266,6 +266,7 @@ gulp.task('ngMegaTable:dist', [
 ]);
 
 gulp.task('default', [
+  'build',
   'coffee:watch',
   'templates:watch',
   'jade:watch',
