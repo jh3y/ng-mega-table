@@ -7,6 +7,9 @@ An angular directive for handling mega data.
 
 This is a directive put together to show how you can overcome handling large datasets in angular by making use of templating using libraries like Handlebars.js
 
+##Usage
+Just grab copies of the distribution styles and scripts and pull them into your page. Then add the module `ngMegaTable` as a dependency to your application. Refer to [options](#Options) below in order to understand the table options to be passed in.
+
 ##Getting started
 ###Prerequisites
 It is assumed that you have __bower__ and __node__ installed.
